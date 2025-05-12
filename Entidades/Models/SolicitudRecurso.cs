@@ -1,12 +1,20 @@
-namespace Entidades.Models;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 public class SolicitudRecurso
 {
+    [Key]
     public int Id { get; set; }
-    public int SolicitudId { get; set; }
-    public Solicitud Solicitud { get; set; }
-    public int RecursoId { get; set; }
-    public Recurso Recurso { get; set; }
-    public string OtroRecursoDescripcion { get; set; } // solo si es 'Otro'
-    public string Detalles { get; set; }
-}
 
+    [Required]
+    [ForeignKey("Solicitud")]
+    public int SolicitudId { get; set; }
+    public virtual Solicitud Solicitud { get; set; }
+
+    [Required]
+    [StringLength(200)]
+    public string Descripcion { get; set; }
+
+    [Required]
+    public int Cantidad { get; set; }
+}

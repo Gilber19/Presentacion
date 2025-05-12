@@ -1,9 +1,22 @@
-namespace Entidades.Models;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 public class ActividadSolicitud
 {
-    public int ActividadId { get; set; }
-    public ActividadAsociada Actividad { get; set; }
+    [Key]
+    public int Id { get; set; }
+
+    [Required]
+    [ForeignKey("ActividadAsociada")]
+    public int ActividadAsociadaId { get; set; }
+    public virtual ActividadAsociada ActividadAsociada { get; set; }
+
+    [Required]
+    [ForeignKey("Solicitud")]
     public int SolicitudId { get; set; }
-    public Solicitud Solicitud { get; set; }
+    public virtual Solicitud Solicitud { get; set; }
+
+    [Required]
+    [StringLength(500)]
     public string Descripcion { get; set; }
 }

@@ -24,11 +24,68 @@ namespace Datos.Contexto
         public DbSet<Usuario> Usuarios { get; set; }
 
 
-        // metodo para configurar el modelo de datos
+        // Fix for the errors related to the use of 'as' as a variable name.  
+        // 'as' is a reserved keyword in C#, so it cannot be used as a variable name.  
+        // Renaming the lambda parameter from 'as' to 'actividadSolicitud' to resolve the issue.  
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
- 
+
+            // Usuario  
+            modelBuilder.Entity<Usuario>()
+                .HasIndex(u => u.Correo)
+                .IsUnique();
+
+            modelBuilder.Entity<Usuario>()
+                .HasIndex(u => u.NumEmpleado)
+                .IsUnique();
+
+            // Solicitud  
+            modelBuilder.Entity<Solicitud>()
+                .HasMany(s => s.ActividadesSolicitud)
+                .WithOne(actividadSolicitud => actividadSolicitud.Solicitud)
+                .HasForeignKey(actividadSolicitud => actividadSolicitud.SolicitudId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Solicitud>()
+                .HasMany(s => s.FirmasSolicitud)
+                .WithOne(f => f.Solicitud)
+                .HasForeignKey(f => f.SolicitudId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // ActividadAsociada  
+            modelBuilder.Entity<ActividadAsociada>()
+                .HasMany(a => a.ActividadesSolicitud)
+                .WithOne(actividadSolicitud => actividadSolicitud.ActividadAsociada)
+                .HasForeignKey(actividadSolicitud => actividadSolicitud.ActividadAsociadaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Usuario - Roles (many-to-one)  
+            modelBuilder.Entity<Usuario>()
+                .HasOne(u => u.Rol)
+                .WithMany()
+                .HasForeignKey(u => u.RolId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Configuring relationships with delete behavior  
+            modelBuilder.Entity<Usuario>()
+                .HasOne(u => u.Carrera)
+                .WithMany()
+                .HasForeignKey(u => u.CarreraId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Usuario>()
+                .HasOne(u => u.Categoria)
+                .WithMany()
+                .HasForeignKey(u => u.CategoriaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Usuario>()
+                .HasOne(u => u.Estado)
+                .WithMany()
+                .HasForeignKey(u => u.EstadoId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

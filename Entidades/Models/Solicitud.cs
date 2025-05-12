@@ -1,15 +1,23 @@
-namespace Entidades.Models;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 public class Solicitud
 {
+    [Key]
     public int Id { get; set; }
-    public string NombreEvento { get; set; }
-    public DateTime FechaSalida { get; set; }
-    public DateTime FechaRegreso { get; set; }
-    public float Costo { get; set; }
-    public string Lugar { get; set; }
-    public byte[] ReporteFinal { get; set; }
-    public byte[] OficioSellado { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+    [Required(ErrorMessage = "La fecha de inicio es requerida")]
+    public DateTime FechaInicio { get; set; }
+
+    [Required(ErrorMessage = "La fecha de fin es requerida")]
+    public DateTime FechaFin { get; set; }
+
+    [Required]
+    [ForeignKey("Usuario")]
+    public int UsuarioId { get; set; }
+    public virtual Usuario Usuario { get; set; }
+
+    public virtual ICollection<ActividadSolicitud> ActividadesSolicitud { get; set; }
+    public virtual ICollection<FirmaSolicitud> FirmasSolicitud { get; set; }
+    public virtual ICollection<SolicitudRecurso> SolicitudesRecursos { get; set; }
 }
-
