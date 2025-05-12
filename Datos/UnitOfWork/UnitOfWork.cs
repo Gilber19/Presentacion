@@ -7,7 +7,7 @@ namespace Datos.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly ApplicationDbContext _context;
+        private readonly D_ContextoBD _context;
         
         public IGenericRepository<ActividadAsociada> ActividadesAsociadas { get; private set; }
         public IGenericRepository<ActividadSolicitud> ActividadesSolicitud { get; private set; }
@@ -22,7 +22,7 @@ namespace Datos.UnitOfWork
         public IGenericRepository<SolicitudRecurso> SolicitudesRecursos { get; private set; }
         public IGenericRepository<Usuario> Usuarios { get; private set; }
 
-        public UnitOfWork(ApplicationDbContext context)
+        public UnitOfWork(D_ContextoBD context)
         {
             _context = context;
             ActividadesAsociadas = new GenericRepository<ActividadAsociada>(context);

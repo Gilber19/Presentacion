@@ -10,10 +10,10 @@ namespace Datos.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        protected readonly ApplicationDbContext _context;
+        protected readonly D_ContextoBD _context;
         private readonly DbSet<T> _dbSet;
 
-        public GenericRepository(ApplicationDbContext context)
+        public GenericRepository(D_ContextoBD context)
         {
             _context = context;
             _dbSet = context.Set<T>();
